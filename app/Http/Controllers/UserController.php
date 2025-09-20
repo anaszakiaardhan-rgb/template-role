@@ -45,7 +45,8 @@ class UserController extends Controller
         ]);
 
         if ($request->has('roles')) {
-            $user->assignRole($request->roles);
+            $roles = Role::whereIn('id', $request->roles)->pluck('name');
+            $user->assignRole($roles);
         }
 
         return redirect()->route('users.index')
@@ -96,7 +97,8 @@ class UserController extends Controller
         $user->update($userData);
         
         if ($request->has('roles')) {
-            $user->syncRoles($request->roles);
+            $roles = Role::whereIn('id', $request->roles)->pluck('name');
+            $user->syncRoles($roles);
         } else {
             $user->syncRoles([]);
         }
